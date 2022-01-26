@@ -34,4 +34,4 @@ COPY --from=publish app/web/out ./
 # expose port and execute aspnetcore app
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
-ENTRYPOINT ["dotnet", "api.dll"]
+CMD ["dotnet", "api.dll"]
