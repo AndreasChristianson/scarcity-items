@@ -27,7 +27,7 @@ RUN dotnet publish -c Release -o out
 
 # final layer using smallest runtime available
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS runtime
-RUN dotnet tool install --global dotnet-ef
+RUN dotnet tool install dotnet-ef
 WORKDIR /app/web
 COPY --from=publish app/web/out ./
 
