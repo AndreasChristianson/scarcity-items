@@ -27,11 +27,11 @@ RUN dotnet publish -c Release -o out
 
 # final layer using smallest runtime available
 # FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS runtime
+# FROM mcr.microsoft.com/dotnet/sdk:6.0 AS runtime
 
-WORKDIR /app/web
-COPY --from=publish app/web/out ./
-COPY --from=publish app/web/.config ./.config/
+# WORKDIR /app/web
+# COPY --from=publish app/web/out ./
+# COPY --from=publish app/web/.config ./.config/
 
 # expose port and execute aspnetcore app
 EXPOSE 8080
