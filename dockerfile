@@ -19,6 +19,7 @@ WORKDIR /app/web
 COPY . .
 # WORKDIR /app/web
 RUN dotnet restore
+RUN dotnet tool restore
 
 # layer adding linker then publish after tree shaking
 FROM build AS publish
