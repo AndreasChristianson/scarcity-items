@@ -18,10 +18,14 @@ public class EquipmentController : ControllerBase {
     return _itemContext.Equipment.ToArray();
   }
   [HttpGet("{id}")]
-  public Equipment? Get(Guid id) {
-    _logger.LogCritical($"getting by id ({id})!");
-    return _itemContext.Equipment
+  public ActionResult<Equipment> Get(Guid id) {
+    var entity = _itemContext.Equipment
       .Where(equipment => equipment.Id == id)
       .SingleOrDefault();
+    return OkOrNotFound(entity);
+  }
+
+  private ActionResult<Equipment> OkOrNotFound(Equipment? entity) {
+    return entity is null ? NotFound(): Ok(entity);
   }
 }
