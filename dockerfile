@@ -37,4 +37,4 @@ RUN dotnet publish -c Release -o out
 # expose port and execute aspnetcore app
 EXPOSE 8080
 ENV ASPNETCORE_URLS=http://+:8080
-CMD ["dotnet", "api.dll"]
+CMD ["dotnet", "out/api.dll"]
