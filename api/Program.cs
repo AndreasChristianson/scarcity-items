@@ -1,5 +1,6 @@
 using api;
 using Microsoft.EntityFrameworkCore;
+using static api.Utils.ConnectionStringHelper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,15 +13,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ItemContext>(options =>
             options.UseNpgsql(
-              Environment.GetEnvironmentVariable("DATABASE_URL") ?? builder.Configuration.GetConnectionString("ItemContext")
+              GetConnectionString(builder)
               ));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) {
-  app.UseSwagger();
-  app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 app.MapHealthChecks("/healthz");
 // app.UseHttpsRedirection();

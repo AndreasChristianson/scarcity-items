@@ -12,7 +12,7 @@ public class EquipmentController : ControllerBase
     public EquipmentController(ILogger<WeatherForecastController> logger, ItemContext itemContext)
     {
         _logger = logger;
-        _itemContext=itemContext;
+        _itemContext = itemContext;
     }
 
     [HttpGet(Name = "GetEquipment")]
