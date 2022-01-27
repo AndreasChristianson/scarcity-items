@@ -11,10 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ItemContext>(options =>
-            options.UseNpgsql(
-              GetConnectionString(builder)
-              ));
+builder.Services.AddDbContext<ItemContext>(
+  options => options.UseNpgsql(GetConnectionString(builder)));
 
 var app = builder.Build();
 
@@ -23,6 +21,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHttpLogging();
 }
 app.MapHealthChecks("/healthz");
 // app.UseHttpsRedirection();
