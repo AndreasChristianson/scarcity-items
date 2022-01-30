@@ -1,6 +1,7 @@
-using api;
 using Microsoft.EntityFrameworkCore;
 using static api.Utils.ConnectionStringHelper;
+using api.Database;
+using api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,17 +12,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ItemContext>(
-  options => options.UseNpgsql(GetConnectionString(builder)));
+builder.Services.AddDbContext<PersistenceContext>(
+  options => options.UseNpgsql(GetConnectionString(builder))
+  );
+
+
+builder.Services.AddScoped<WeaponService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseHttpLogging();
+  app.UseSwagger();
+  app.UseSwaggerUI();
+  app.UseHttpLogging();
 }
 app.MapHealthChecks("/healthz");
 // app.UseHttpsRedirection();
@@ -29,5 +34,13 @@ app.MapHealthChecks("/healthz");
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.CreateScope())
+{
+  var context = serviceScope.ServiceProvider.GetRequiredService<PersistenceContext>();
+  context.Database.Migrate();
+
+  InitializeWeaponTemplates.Seed(context);
+}
 
 app.Run();
